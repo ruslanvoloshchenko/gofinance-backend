@@ -8,9 +8,15 @@ migrateup:
 	migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/go_finance?sslmode=disable" -verbose up
 
 migrationdrop:
-	migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/go_finance?sslmode=disable" -verbose drop
+	migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/go_finance?sslmode=disable" -verbose down
 
 test:
 	go test -v -cover ./...
 
-.PHONY: createdb postgres migrateup migrationdrop test
+server:
+	go run main.go
+
+sqlc-gen:
+	docker run --rm -v $$(pwd):/src -w /src kjconroy/sqlc generate
+
+.PHONY: createdb postgres dropdb migrateup migrationdrop test server sqlc-gen
