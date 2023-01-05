@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/require"
-	"github.com/wil-ckaew/go-finance/util"
+	"github.com/wil-ckaew/gofinance-backend/util"
 )
 
 func createRandomAccount(t *testing.T) Account {
