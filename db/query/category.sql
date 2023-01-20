@@ -19,9 +19,9 @@ WHERE
 AND
   type = $2
 AND
-  title LIKE CONCAT('%', @title::text, '%')
+  LOWER(title) LIKE CONCAT('%', LOWER(@title::text), '%')
 AND
-  description LIKE CONCAT('%', @description::text, '%');
+  LOWER(description) LIKE CONCAT('%', LOWER(@description::text), '%');
 
 
 -- name: GetCategoriesByUserIdAndType :many

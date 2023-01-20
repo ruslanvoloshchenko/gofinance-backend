@@ -63,9 +63,9 @@ WHERE
 AND
   type = $2
 AND
-  title LIKE CONCAT('%', $3::text, '%')
+  LOWER(title) LIKE CONCAT('%', LOWER($3::text), '%')
 AND
-  description LIKE CONCAT('%', $4::text, '%')
+  LOWER(description) LIKE CONCAT('%', LOWER($4::text), '%')
 `
 
 type GetCategoriesParams struct {

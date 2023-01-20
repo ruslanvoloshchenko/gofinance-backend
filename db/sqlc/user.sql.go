@@ -11,11 +11,11 @@ import (
 
 const createUser = `-- name: CreateUser :one
 INSERT INTO users (
-    username,
-    password,
-    email
+  username,
+  password,
+  email
 ) VALUES (
-    $1, $2, $3
+  $1, $2, $3
 ) RETURNING id, username, password, email, created_at
 `
 
@@ -39,7 +39,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 }
 
 const getUser = `-- name: GetUser :one
-SELECT id, username, password, email, created_at FROM users 
+SELECT id, username, password, email, created_at FROM users
 WHERE username = $1 LIMIT 1
 `
 
@@ -57,7 +57,7 @@ func (q *Queries) GetUser(ctx context.Context, username string) (User, error) {
 }
 
 const getUserById = `-- name: GetUserById :one
-SELECT id, username, password, email, created_at FROM users 
+SELECT id, username, password, email, created_at FROM users
 WHERE id = $1 LIMIT 1
 `
 

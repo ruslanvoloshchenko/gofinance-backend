@@ -12,7 +12,7 @@ func createRandomUser(t *testing.T) User {
 	arg := CreateUserParams{
 		Username: util.RandomString(6),
 		Password: util.RandomString(12),
-		Email:    util.RandomEmail(7),
+		Email:    util.RandomEmail(8),
 	}
 
 	user, err := testQueries.CreateUser(context.Background(), arg)
@@ -41,7 +41,6 @@ func TestGetUser(t *testing.T) {
 	require.Equal(t, user1.Password, user2.Password)
 	require.Equal(t, user1.Email, user2.Email)
 	require.NotEmpty(t, user2.CreatedAt)
-
 }
 
 func TestGetUserById(t *testing.T) {
@@ -54,5 +53,4 @@ func TestGetUserById(t *testing.T) {
 	require.Equal(t, user1.Password, user2.Password)
 	require.Equal(t, user1.Email, user2.Email)
 	require.NotEmpty(t, user2.CreatedAt)
-
 }

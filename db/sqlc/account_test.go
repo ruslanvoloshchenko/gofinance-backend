@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"database/sql"
 	"testing"
 	"time"
 
@@ -57,12 +58,11 @@ func TestGetAccount(t *testing.T) {
 
 	require.NotEmpty(t, account2.Date)
 	require.NotEmpty(t, account2.CreatedAt)
-
 }
 
 func TestDeleteAccount(t *testing.T) {
 	account := createRandomAccount(t)
-	err := testQueries.DeleteAccounty(context.Background(), account.ID)
+	err := testQueries.DeleteAccount(context.Background(), account.ID)
 	require.NoError(t, err)
 }
 
@@ -88,15 +88,21 @@ func TestUpdateAccount(t *testing.T) {
 }
 
 func TestListAccounts(t *testing.T) {
-	lasAccount := createRandomAccount(t)
+	lastAccount := createRandomAccount(t)
 
 	arg := GetAccountsParams{
-		UserID:      lasAccount.UserID,
-		Type:        lasAccount.Type,
-		CategoryID:  lasAccount.CategoryID,
-		Date:        lasAccount.Date,
-		Title:       lasAccount.Title,
-		Description: lasAccount.Description,
+		UserID: lastAccount.UserID,
+		Type:   lastAccount.Type,
+		CategoryID: sql.NullInt32{
+			Valid: true,
+			Int32: lastAccount.CategoryID,
+		},
+		Date: sql.NullTime{
+			Valid: true,
+			Time:  lastAccount.Date,
+		},
+		Title:       lastAccount.Title,
+		Description: lastAccount.Description,
 	}
 
 	accounts, err := testQueries.GetAccounts(context.Background(), arg)
@@ -104,41 +110,38 @@ func TestListAccounts(t *testing.T) {
 	require.NotEmpty(t, accounts)
 
 	for _, account := range accounts {
-		require.Equal(t, lasAccount.ID, account.ID)
-		require.Equal(t, lasAccount.UserID, account.UserID)
-		require.Equal(t, lasAccount.Title, account.Title)
-		require.Equal(t, lasAccount.Description, account.Description)
-		require.Equal(t, lasAccount.Value, account.Value)
-		require.NotEmpty(t, lasAccount.CreatedAt)
-		require.NotEmpty(t, lasAccount.Date)
+		require.Equal(t, lastAccount.ID, account.ID)
+		require.Equal(t, lastAccount.UserID, account.UserID)
+		require.Equal(t, lastAccount.Title, account.Title)
+		require.Equal(t, lastAccount.Description, account.Description)
+		require.Equal(t, lastAccount.Value, account.Value)
+		require.NotEmpty(t, lastAccount.CreatedAt)
+		require.NotEmpty(t, lastAccount.Date)
 	}
-
 }
 
 func TestListGetReports(t *testing.T) {
-	lasAccount := createRandomAccount(t)
+	lastAccount := createRandomAccount(t)
 
 	arg := GetAccountsReportsParams{
-		UserID: lasAccount.UserID,
-		Type:   lasAccount.Type,
+		UserID: lastAccount.UserID,
+		Type:   lastAccount.Type,
 	}
 
 	sumValue, err := testQueries.GetAccountsReports(context.Background(), arg)
 	require.NoError(t, err)
 	require.NotEmpty(t, sumValue)
-
 }
 
 func TestListGetGraph(t *testing.T) {
-	lasAccount := createRandomAccount(t)
+	lastAccount := createRandomAccount(t)
 
 	arg := GetAccountsGraphParams{
-		UserID: lasAccount.UserID,
-		Type:   lasAccount.Type,
+		UserID: lastAccount.UserID,
+		Type:   lastAccount.Type,
 	}
 
 	graphValue, err := testQueries.GetAccountsGraph(context.Background(), arg)
 	require.NoError(t, err)
 	require.NotEmpty(t, graphValue)
-
 }

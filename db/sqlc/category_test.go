@@ -45,7 +45,6 @@ func TestGetCategory(t *testing.T) {
 	require.Equal(t, category1.Description, category2.Description)
 	require.Equal(t, category1.Type, category2.Type)
 	require.NotEmpty(t, category2.CreatedAt)
-
 }
 
 func TestDeleteCategory(t *testing.T) {
@@ -74,13 +73,13 @@ func TestUpdateCategory(t *testing.T) {
 }
 
 func TestListCategories(t *testing.T) {
-	lasCategory := createRandomCategory(t)
+	lastCategory := createRandomCategory(t)
 
 	arg := GetCategoriesParams{
-		UserID:      lasCategory.UserID,
-		Type:        lasCategory.Type,
-		Title:       lasCategory.Title,
-		Description: lasCategory.Description,
+		UserID:      lastCategory.UserID,
+		Type:        lastCategory.Type,
+		Title:       lastCategory.Title,
+		Description: lastCategory.Description,
 	}
 
 	categorys, err := testQueries.GetCategories(context.Background(), arg)
@@ -88,11 +87,10 @@ func TestListCategories(t *testing.T) {
 	require.NotEmpty(t, categorys)
 
 	for _, category := range categorys {
-		require.Equal(t, lasCategory.ID, category.ID)
-		require.Equal(t, lasCategory.UserID, category.UserID)
-		require.Equal(t, lasCategory.Title, category.Title)
-		require.Equal(t, lasCategory.Description, category.Description)
-		require.NotEmpty(t, lasCategory.CreatedAt)
+		require.Equal(t, lastCategory.ID, category.ID)
+		require.Equal(t, lastCategory.UserID, category.UserID)
+		require.Equal(t, lastCategory.Title, category.Title)
+		require.Equal(t, lastCategory.Description, category.Description)
+		require.NotEmpty(t, lastCategory.CreatedAt)
 	}
-
 }
